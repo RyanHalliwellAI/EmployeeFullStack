@@ -52,5 +52,39 @@ namespace EmployeeFullStack.Controllers
 
             //return new JsonResult(table);
         }
+        [HttpPost]
+        public IActionResult Post([FromBody] Department dep)
+        {
+            if (dep == null || string.IsNullOrWhiteSpace(dep.DepartmentName))
+            {
+                return BadRequest("Invalid department data.");
+            }
+
+            string query = @"
+                    INSERT INTO dbo.Department (DepartmentName) 
+                    VALUES (@DepartmentName)";
+
+            using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("EmployeeAppCon")))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@DepartmentName", dep.DepartmentName);
+
+                    // Execute non-query for insert
+                    int result = myCommand.ExecuteNonQuery();
+
+                    if (result > 0)
+                    {
+                        return Ok(new { Message = "Department added successfully." });
+                    }
+                    else
+                    {
+                        return StatusCode(500, "An error occurred while adding the department.");
+                    }
+                }
+            }
+        }
+
     }
 }
