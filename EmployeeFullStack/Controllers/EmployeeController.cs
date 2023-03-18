@@ -172,11 +172,15 @@ namespace EmployeeFullStack.Controllers
                 string filename = postedFile.FileName;
                 var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
 
-                using(var stream)
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+                return new JsonResult(filename);
             }
             catch(Exception)
             {
-                return new JsonResult("anonymous.png")
+                return new JsonResult("anonymous.png");
             }
         }
 
