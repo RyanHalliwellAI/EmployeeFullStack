@@ -3,18 +3,34 @@ import {variables} from './Variables.js';
 
 export class Department extends Component{
     
+
     constructor(props){
         super(props);
 
         this.state={
             departments:[]
-
-        }
         
     }
+}
+    refreshList(){
+        fetch(variables.API_URL+'department')
+        .then(response=>response.json())
+        .then(data=>{
+            this.setState({departments:data});
+            console.log(variables.API_URL);
+
+        });
+    
+    }
+    componentDidMount(){
+        this.refreshList();
+    }
+
 
     
         render(){
+            const { departments } = this.state;
+
         return(
 <div>
             <table className="table table-striped">
