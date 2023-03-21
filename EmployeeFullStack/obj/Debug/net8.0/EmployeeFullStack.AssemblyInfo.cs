@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EmployeeFullStack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0ebdedc4468012f3698038e83fe20276d4a4a6d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73de183da6892b3575526ea6aadf89ab6eff2301")]
 [assembly: System.Reflection.AssemblyProductAttribute("EmployeeFullStack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EmployeeFullStack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
