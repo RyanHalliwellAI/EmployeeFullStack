@@ -47,6 +47,48 @@ export class Department extends Component{
         });
     }
 
+    createClick(){
+        fetch(variables.API_URL+'department',{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                DepartmentName:this.state.DepartmentName
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+    }
+
+
+    updateClick(){
+        fetch(variables.API_URL+'department',{
+            method:'PUT',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                DepartmentId:this.state.DepartmentId,
+                DepartmentName:this.state.DepartmentName
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+    }
+
 
     
         render(){
@@ -125,11 +167,14 @@ export class Department extends Component{
        {DepartmentId===0?
         <button type="button"
         className="btn btn-primary float-start"
+        onClick={()=>this.createClick()}
         >Create</button>
         :null}
         {DepartmentId!==0?
         <button type="button"
         className="btn btn-primary float-start"
+        onClick={()=>this.updateClick()}
+
         >Update</button>
         :null}
    </div>
