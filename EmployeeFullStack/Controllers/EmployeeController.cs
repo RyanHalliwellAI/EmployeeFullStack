@@ -171,6 +171,7 @@ namespace EmployeeFullStack.Controllers
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
                 var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
+                Console.WriteLine(physicalPath);
 
                 using (var stream = new FileStream(physicalPath, FileMode.Create))
                 {

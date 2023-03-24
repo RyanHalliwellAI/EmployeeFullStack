@@ -36,13 +36,15 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseStaticFiles(); // Default static files middleware
+var photoDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Photos");
+Console.WriteLine($"Serving photos from: {photoDirectory}");
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Photos")),
+    FileProvider = new PhysicalFileProvider(photoDirectory),
     RequestPath = "/Photos"
 });
+app.MapControllers();
 
 app.Run();

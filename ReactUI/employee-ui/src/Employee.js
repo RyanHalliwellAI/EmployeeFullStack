@@ -166,6 +166,7 @@ export class Employee extends Component{
             <tbody>
              {employees.map(emp=>
                     <tr key ={emp.EmployeeId}>
+                    <td>{emp.EmployeeId}</td>
                     <td>{emp.EmployeeName}</td>
                     <td>{emp.Department}</td>
                     <td>{emp.DateOfJoining}</td>
@@ -218,24 +219,52 @@ export class Employee extends Component{
 
    <div className="modal-body">
     <div className = "d-flex flex-row bd-highlight mb-3">
-        <div clasName = "p-2 w-50 bd-highlight">
+        <div className = "p-2 w-50 bd-highlight">
             <div className="input-group mb-3">
-            <span className="input-group-text">DepartmentName</span>
+            <span className="input-group-text">Employee name</span>
             <input type="text" className="form-control"
-            value={DepartmentName}
-            onChange={this.changeDepartmentName}/>
-        </div>
+            value={EmployeeName}
+            onChange={this.changeEmployeeName}/>
+
+
         </div>
 
-        <div clasName = "p-2 w-50 bd-highlight">
+        <div className="input-group mb-3">
+            <span className="input-group-text">Department</span>
+            <select className="form-select"
+            onChange={this.changeDepartment}
+            value={Department}>
+                {departments.map(dep=><option key={dep.DepartmentId}>
+                    {dep.DepartmentName}
+                </option>)}
+            </select>
+        </div>
 
-       {DepartmentId===0?
+        <div className="input-group mb-3">
+            <span className="input-group-text">Date of Joining</span>
+            <input type="text" className="form-control"
+            value={DateOfJoining}
+            onChange={this.changeDateOfJoining}/>
+        </div>
+
+
+
+        </div>
+
+        <div className="p-2 w-50 bd-highlight">
+    <img width="250px" height="250px" src={PhotoPath + PhotoFileName} alt= "test" />
+    <p>{PhotoPath+PhotoFileName}</p> {/* Display the PhotoFileName */}
+    <input className="m-2" type="file" onChange={this.imageUpload} />
+            </div>
+        </div>
+
+       {EmployeeId===0?
         <button type="button"
         className="btn btn-primary float-start"
         onClick={()=>this.createClick()}
         >Create</button>
         :null}
-        {DepartmentId!==0?
+        {EmployeeId!==0?
         <button type="button"
         className="btn btn-primary float-start"
         onClick={()=>this.updateClick()}
@@ -244,7 +273,6 @@ export class Employee extends Component{
         :null}
     </div>
 
-   </div>
    </div>
    </div>
    </div>
