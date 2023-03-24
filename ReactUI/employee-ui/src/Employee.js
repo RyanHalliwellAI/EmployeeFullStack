@@ -96,7 +96,7 @@ export class Employee extends Component{
 
 
     updateClick(){
-        fetch(variables.API_URL+'department',{
+        fetch(variables.API_URL+'employee',{
             method:'PUT',
             headers:{
                 'Accept':'application/json',
@@ -139,6 +139,21 @@ export class Employee extends Component{
             alert('Failed');
         })
         }
+    }
+    imageUpload=(e)=>{
+        e.preventDefault();
+
+        const formData=new FormData();
+        formData.append("file",e.target.files[0],e.target.files[0].name);
+
+        fetch(variables.API_URL+'employee/savefile',{
+            method:'POST',
+            body:formData
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            this.setState({PhotoFileName:data});
+        })
     }
 
 
@@ -241,8 +256,8 @@ export class Employee extends Component{
         </div>
 
         <div className="input-group mb-3">
-            <span className="input-group-text">Date of Joining</span>
-            <input type="text" className="form-control"
+            <span className="input-group-text">DOJ</span>
+            <input type="date" className="form-control"
             value={DateOfJoining}
             onChange={this.changeDateOfJoining}/>
         </div>
