@@ -40,7 +40,7 @@ export class Department extends Component{
             DepartmentName:""
         });
     }
-    // Method to set the state for editing a  department
+    // Method to set the state for editing a department
     editClick(dep){
         this.setState({
             modalTitle:"Edit Department",
@@ -112,7 +112,7 @@ export class Department extends Component{
                 })
         }
     }
-    //The reder method is to display the component UI
+    //The render method is to display the component UI
     render(){
             const { departments, modalTitle, DepartmentId,DepartmentName } = this.state;
         return(
