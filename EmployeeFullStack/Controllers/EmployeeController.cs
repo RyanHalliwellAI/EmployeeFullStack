@@ -3,32 +3,34 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using EmployeeFullStack.Models;
-using Microsoft.Data.SqlClient; // Corrected namespace
+using Microsoft.Data.SqlClient; 
 
 namespace EmployeeFullStack.Controllers
 {
+    //Route attr for the base url for all actions in controller. The responder interacts with API
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        //dependency injections for webhosting and configuration
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
-
-
         public EmployeeController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
             _env = env;
         }
-
+        //Get for the employees.
         [HttpGet]
         public IActionResult Get()
         {
+            //SQL query
             string query = @"
                             SELECT EmployeeId, EmployeeName, Department,
                             convert(varchar(10), DateOfJoining, 120) as DateOfJoining, PhotoFileName
                             FROM dbo.Employee";
 
+            //creates new table, obtains connection string, opens connection executions sql, returns table.
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
@@ -42,7 +44,7 @@ namespace EmployeeFullStack.Controllers
                     }
                 }
             }
-
+            //converts datatable into dictionary
             var result = table.AsEnumerable()
                 .Select(row => table.Columns.Cast<DataColumn>()
                 .ToDictionary(col => col.ColumnName, col => row[col]))
@@ -50,19 +52,21 @@ namespace EmployeeFullStack.Controllers
 
             return Ok(result);
         }
-
+        //Post method for new employees
         [HttpPost]
         public IActionResult Post([FromBody] Employee emp)
         {
+            //valildate imput
             if (emp == null || string.IsNullOrWhiteSpace(emp.EmployeeName))
             {
                 return BadRequest("Invalid employee data.");
             }
-
+            // SQL query
             string query = @"
                     INSERT INTO dbo.Employee (EmployeeName, Department, DateOfJoining, PhotoFileName) 
                     VALUES (@EmployeeName, @Department, @DateOfJoining, @PhotoFileName)";
 
+            //opens connection, adds the parameters to the command,runs the command, then checks if it was added correctly.
             using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("EmployeeAppCon")))
             {
                 myCon.Open();
@@ -86,15 +90,16 @@ namespace EmployeeFullStack.Controllers
                 }
             }
         }
-
+        //Updating existing Employees
         [HttpPut]
         public IActionResult Put([FromBody] Employee emp)
         {
+            // Validate the input
             if (emp == null || emp.EmployeeId <= 0)
             {
                 return BadRequest("Invalid employee data.");
             }
-
+            //SQL query
             string query = @"
                             UPDATE dbo.Employee 
                             SET EmployeeName = @EmployeeName,
@@ -103,6 +108,7 @@ namespace EmployeeFullStack.Controllers
                                 PhotoFileName = @PhotoFileName
                             WHERE EmployeeId = @EmployeeId";
 
+            //opens connection, adds the parameters to the command,runs the command, then checks if it was added correctly.
             using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("EmployeeAppCon")))
             {
                 myCon.Open();
@@ -127,19 +133,21 @@ namespace EmployeeFullStack.Controllers
                 }
             }
         }
-
+        //Delete method with employee ID
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            //Validate input
             if (id <= 0)
             {
                 return BadRequest("Invalid employee ID.");
             }
-
+            //SQL query
             string query = @"
                             DELETE FROM dbo.Employee 
                             WHERE EmployeeId = @EmployeeId";
 
+            //opens connection, adds the parameters to the command,runs the command, then checks if it was added correctly.
             using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("EmployeeAppCon")))
             {
                 myCon.Open();
@@ -160,18 +168,18 @@ namespace EmployeeFullStack.Controllers
                 }
             }
         }
-
+        //Post method for photo file.
         [Route("SaveFile")]
         [HttpPost]
         public JsonResult SaveFile()
         {
             try 
             {
+                // Get the data, get the url name, and then write it to correct path
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
                 var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
-                Console.WriteLine(physicalPath);
 
                 using (var stream = new FileStream(physicalPath, FileMode.Create))
                 {
@@ -184,6 +192,5 @@ namespace EmployeeFullStack.Controllers
                 return new JsonResult("anonymous.png");
             }
         }
-
     }
 }
