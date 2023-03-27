@@ -11,6 +11,7 @@ export class Department extends Component{
             departments:[],
             modalTitle:"",
             DepartmentName:"",
+            DepartmentDescription: "",
             DepartmentId:0     
     }
 }
@@ -32,12 +33,18 @@ export class Department extends Component{
         this.setState({DepartmentName:e.target.value});
     }
 
+    //Updates Department Description (event handler)
+    changeDepartmentDescription =(e)=>{
+        this.setState({DepartmentDescription:e.target.value});
+    }   
+
     // Method to set the state for adding a new department
     addClick(){
         this.setState({
             modalTitle:"Add Department",
             DepartmentId:0,
-            DepartmentName:""
+            DepartmentName:"",
+            DepartmentDescription:""
         });
     }
     // Method to set the state for editing a department
@@ -45,7 +52,9 @@ export class Department extends Component{
         this.setState({
             modalTitle:"Edit Department",
             DepartmentId:dep.DepartmentId,
-            DepartmentName:dep.DepartmentName
+            DepartmentName:dep.DepartmentName,
+            DepartmentDescription:dep.DepartmentDescription
+
         });
     }
 
@@ -58,7 +67,9 @@ export class Department extends Component{
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                DepartmentName:this.state.DepartmentName
+                DepartmentName:this.state.DepartmentName,
+                DepartmentDescription:this.state.DepartmentDescription
+
             })
         })
         .then(res=>res.json())
@@ -79,7 +90,9 @@ export class Department extends Component{
             },
             body:JSON.stringify({
                 DepartmentId:this.state.DepartmentId,
-                DepartmentName:this.state.DepartmentName
+                DepartmentName:this.state.DepartmentName,
+                DepartmentDescription:this.state.DepartmentDescription
+
             })
         })
         .then(res=>res.json())
@@ -114,7 +127,8 @@ export class Department extends Component{
     }
     //The render method is to display the component UI
     render(){
-            const { departments, modalTitle, DepartmentId,DepartmentName } = this.state;
+            const { departments, modalTitle, DepartmentId,DepartmentName, DepartmentDescription  } = this.state;
+        console.log(departments);
         return(
             <div>
                   {/* Button to open modal for adding a new department */}
@@ -130,6 +144,7 @@ export class Department extends Component{
                         <thead>
                             <th>DepartmentID</th>
                             <th>DepartmentName</th>
+                            <th>DepartmentDescription</th>
                             <th>Options</th>
                         </thead>
                         <tbody>
@@ -137,6 +152,7 @@ export class Department extends Component{
                                     <tr key ={dep.DepartmentId}>
                                     <td>{dep.DepartmentId}</td>
                                     <td>{dep.DepartmentName}</td>
+                                    <td>{typeof dep.DepartmentDescription === 'string' ? dep.DepartmentDescription : JSON.stringify(dep.DepartmentDescription)}</td>
                                     <td>
                                         {/* Button to open modal for editing the department */}
                                         <button type = "button" 
@@ -173,11 +189,21 @@ export class Department extends Component{
                 </div>
 
                 <div className="modal-body">
+                     {/* Change Department Name */}
+
                     <div className="input-group mb-3">
                         <span className="input-group-text">DepartmentName</span>
                         <input type="text" className="form-control"
                         value={DepartmentName}
                         onChange={this.changeDepartmentName}/>
+                    </div>
+                     {/* Change Department Description */}
+
+                    <div className="input-group mb-3">
+                        <span className="input-group-text">DepartmentDescription</span>
+                        <input type="text" className="form-control"
+                        value={DepartmentDescription}
+                        onChange={this.changeDepartmentDescription}/>
                     </div>
                     {/* Show Create button if DepartmentId is 0 (When creating dep) */}
                     {DepartmentId===0?

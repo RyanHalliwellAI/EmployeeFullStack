@@ -1,5 +1,7 @@
 ﻿namespace EmployeeFullStack.Models
 {
+    //Cretate class with variables for Employee
+
     public class Employee
     {
         public int EmployeeId { get; set; }

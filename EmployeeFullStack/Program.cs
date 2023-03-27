@@ -6,11 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS policy
+// Add CORS policy - allowing the api to be used between two programs
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -37,9 +36,10 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 
 app.UseStaticFiles(); // Default static files middleware
+//The photo direcotry to save employee photos
 var photoDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Photos");
 Console.WriteLine($"Serving photos from: {photoDirectory}");
-
+//allowing the use of static photos. 
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(photoDirectory),

@@ -28,7 +28,7 @@ namespace EmployeeFullStack.Controllers
         {
             //SQL query
             string query = @"
-                            SELECT DepartmentId, DepartmentName 
+                            SELECT DepartmentId, DepartmentName, DepartmentDescription 
                             FROM dbo.Department";
 
             //Creating table, getting connectin string, opening connection, running command, returning results.
@@ -64,8 +64,8 @@ namespace EmployeeFullStack.Controllers
             }
             // SQL Query
             string query = @"
-                    INSERT INTO dbo.Department (DepartmentName) 
-                    VALUES (@DepartmentName)";
+                    INSERT INTO dbo.Department (DepartmentName, DepartmentDescription) 
+                    VALUES (@DepartmentName, @DepartmentDescription)";
 
             //opens connection, adds the parameters to the command,runs the command, then checks if it was added correctly.
             using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("EmployeeAppCon")))
@@ -74,6 +74,8 @@ namespace EmployeeFullStack.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@DepartmentName", dep.DepartmentName);
+                    myCommand.Parameters.AddWithValue("@DepartmentDescription", dep.DepartmentDescription);
+
                     int result = myCommand.ExecuteNonQuery();
                     if (result > 0)
                     {
@@ -98,7 +100,8 @@ namespace EmployeeFullStack.Controllers
             //SQL query
             string query = @"
                             UPDATE dbo.Department 
-                            SET DepartmentName = @DepartmentName
+                            SET DepartmentName = @DepartmentName,
+                            DepartmentDescription = @DepartmentDescription
                             WHERE DepartmentId = @DepartmentId";
             
             //opens connection, adds the parameters to the command,runs the command, then checks if it was added correctly.
@@ -109,6 +112,7 @@ namespace EmployeeFullStack.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@DepartmentId", dep.DepartmentId);
                     myCommand.Parameters.AddWithValue("@DepartmentName", dep.DepartmentName);
+                    myCommand.Parameters.AddWithValue("@DepartmentDescription", dep.DepartmentDescription);
 
                     int result = myCommand.ExecuteNonQuery();
 

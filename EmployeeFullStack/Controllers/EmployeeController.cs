@@ -20,7 +20,7 @@ namespace EmployeeFullStack.Controllers
             _configuration = configuration;
             _env = env;
         }
-        //Get for the employees.
+        //Get for the employees
         [HttpGet]
         public IActionResult Get()
         {
