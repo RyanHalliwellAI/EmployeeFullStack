@@ -57,7 +57,7 @@ export class Employee extends Component{
             modalTitle:"Add Employee",
             EmployeeId:0,
             EmployeeName:"",
-            Department:"",
+            Department:"IT",
             DateOfJoining:"",
             PhotoFileName: "anonymous.png"
         });

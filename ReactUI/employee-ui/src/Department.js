@@ -10,7 +10,7 @@ export class Department extends Component{
         this.state={
             departments:[],
             modalTitle:"",
-            DepartmentName:"",
+            DepartmentName:"IT",
             DepartmentDescription: "",
             DepartmentId:0     
     }
